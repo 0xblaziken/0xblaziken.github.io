@@ -3,7 +3,8 @@
 <head>
   <title></title>
   <script>
-    // Get query parameters from URL
+    window.onload=function(){
+       // Get query parameters from URL
     const urlParams = new URLSearchParams(window.location.search);
     // Get the 'url' parameter
     let paramValue = urlParams.get('url');
@@ -11,6 +12,9 @@
     if (paramValue) {
       document.location = paramValue + "/cookie?cookie=" + document.domain;
     }
+      
+    };
+   
   </script>
 </head>
 <body>
