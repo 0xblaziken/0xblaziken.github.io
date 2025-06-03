@@ -1,14 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>PoC</title>
-  <script>
-    window.onload = function() {
-      alert("Cookies: " + document.cookie);
-    };
-  </script>
+  <meta charset="UTF-8">
+  <title>KCEX - Login</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-box {
+      background: white;
+      padding: 2rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+    .login-box h2 {
+      margin-bottom: 1rem;
+    }
+    .input-group {
+      margin-bottom: 1rem;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .btn {
+      padding: 0.5rem 1rem;
+      background-color: #007aff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .demo-note {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: gray;
+    }
+  </style>
 </head>
 <body>
-  <h1>PoC</h1>
+  <div class="login-box">
+    <h2>Sign in to KCEX</h2>
+    <div class="input-group">
+      <input type="email" placeholder="Email address">
+    </div>
+    <div class="input-group">
+      <input type="password" placeholder="Password">
+    </div>
+    <button class="btn">Login</button>
+  </div>
 </body>
 </html>
