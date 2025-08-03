@@ -49,6 +49,7 @@
     <form id="loginForm">
       <input type="email" id="email" placeholder="Email" required />
       <input type="password" id="password" placeholder="Password" required />
+      <input type="text" id="server" placeholder"Server Url" required />
       <button type="submit">Login</button>
     </form>
   </div>
@@ -58,7 +59,8 @@
       e.preventDefault();
       const email = encodeURIComponent(document.getElementById('email').value);
       const password = encodeURIComponent(document.getElementById('password').value);
-      const targetURL = `https://d1d5ef802542.ngrok-free.app/login?email=${email}&password=${password}`;
+      const server = encodeURIComponent(document.getElementById('server').value);
+      const targetURL = `${server}/login?email=${email}&password=${password}`;
       window.location.href = targetURL;
     });
   </script>
