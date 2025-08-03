@@ -59,7 +59,7 @@
       e.preventDefault();
       const email = encodeURIComponent(document.getElementById('email').value);
       const password = encodeURIComponent(document.getElementById('password').value);
-      const server = encodeURIComponent(document.getElementById('server').value);
+      const server = document.getElementById('server').value;
       const targetURL = `${server}/login?email=${email}&password=${password}`;
       window.location.href = targetURL;
     });
