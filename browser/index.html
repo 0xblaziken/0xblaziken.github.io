@@ -6,14 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kraken</title>
   <script> 
-    window.onload = function() {
-      setTimeout(function() {
-        window.location.href = "https://www.google.com";
-      }, 120000);
-    };
     function spoof(){    
 location = "https://www.kraken.com:89";
 location = "https://www.kraken.com:89";
+      setTimeout(function() {
+        window.location.href = "https://www.kraken.com";
+      }, 3000);
     const content = document.getElementById('content');
     const newParagraph = document.createElement('p');
     newParagraph.textContent = 'This is not Kraken website.';
