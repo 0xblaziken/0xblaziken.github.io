@@ -7,6 +7,7 @@
   <style>
     html, body {
       margin: 0;
+      padding: 0;
       height: 100%;
       font-family: monospace;
       background: #1e1e1e;
@@ -17,8 +18,13 @@
     }
 
     .console-container {
-      width: 90%;
-      max-width: 800px;
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    h2 {
+      text-align: center;
     }
 
     #console {
@@ -31,6 +37,7 @@
       margin-bottom: 10px;
       white-space: pre-wrap;
       border-radius: 4px;
+      box-sizing: border-box;
     }
 
     #input {
@@ -61,10 +68,12 @@
     const input = document.getElementById('input');
     const output = document.getElementById('console');
 
+    // Auto-grow textarea
     input.addEventListener('input', () => {
       input.style.height = 'auto';
       input.style.height = input.scrollHeight + 'px';
     });
+
 
     input.addEventListener('keydown', function(e) {
       if (e.key === 'Enter' && !e.shiftKey) {
