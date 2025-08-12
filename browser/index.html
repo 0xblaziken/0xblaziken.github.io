@@ -9,12 +9,18 @@
     function spoof(){    
     const submitBtn = document.getElementById('submitButton');
     submitBtn.remove();
+      
       window.location.assign("https://www.google.com:89");
 
       window.location.assign("https://www.google.com:89");
-                  document.title = "PoC";
-    document.write("This is not google.");    
+
+    document.write("This is not google.");
+      setTimeout(updateTitle, 500);
     };
+    function updateTitle()
+      {
+        document.title = "PoC";
+      };
   </script>
 </head>
 <body>
