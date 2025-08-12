@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>JS Console</title>
   <style>
     html, body {
@@ -12,32 +12,39 @@
       font-family: monospace;
       background: #1e1e1e;
       color: #d4d4d4;
+    }
+
+    body {
       display: flex;
-      justify-content: center;
-      align-items: center;
+      flex-direction: column;
     }
 
     .console-container {
-      width: 100%;
-      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding: 10px;
       box-sizing: border-box;
+      height: 100%;
     }
 
     h2 {
       text-align: center;
+      margin: 10px 0;
+      font-size: 1.2em;
     }
 
     #console {
-      height: 300px;
+      flex: 1;
       background: #252526;
       color: #dcdcdc;
       padding: 10px;
       overflow-y: auto;
       border: 1px solid #333;
-      margin-bottom: 10px;
       white-space: pre-wrap;
       border-radius: 4px;
       box-sizing: border-box;
+      margin-bottom: 10px;
     }
 
     #input {
@@ -47,12 +54,28 @@
       overflow: hidden;
       padding: 10px;
       font-family: monospace;
-      font-size: 14px;
+      font-size: 16px; /* Prevent iOS zoom */
       background: #1e1e1e;
       color: white;
       border: 1px solid #444;
       border-radius: 4px;
       box-sizing: border-box;
+      margin-bottom: 10px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background: #007acc;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #005f99;
     }
   </style>
 </head>
@@ -61,12 +84,14 @@
   <div class="console-container">
     <h2>JavaScript Console</h2>
     <div id="console"></div>
-    <textarea id="input" placeholder="Enter JS code and press Enter (Shift+Enter for newline)"></textarea>
+    <textarea id="input" placeholder="Enter JS code here..."></textarea>
+    <button id="runButton">Run</button>
   </div>
 
   <script>
     const input = document.getElementById('input');
     const output = document.getElementById('console');
+    const runButton = document.getElementById('runButton');
 
     // Auto-grow textarea
     input.addEventListener('input', () => {
@@ -74,29 +99,33 @@
       input.style.height = input.scrollHeight + 'px';
     });
 
-
-    input.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        const command = input.value.trim();
-        if (command) {
-          appendToConsole(`> ${command}`);
-          try {
-            const result = eval(command);
-            appendToConsole(result);
-          } catch (err) {
-            appendToConsole(`Error: ${err.message}`);
-          }
+    // Run code on button click
+    runButton.addEventListener('click', () => {
+      const command = input.value.trim();
+      if (command) {
+        appendToConsole(`> ${command}`);
+        try {
+          const result = eval(command);
+          appendToConsole(result);
+        } catch (err) {
+          appendToConsole(`Error: ${err.message}`);
         }
-        input.value = '';
-        input.style.height = 'auto';
       }
+      input.value = '';
+      input.style.height = 'auto';
     });
 
     function appendToConsole(msg) {
       output.textContent += msg + '\n';
       output.scrollTop = output.scrollHeight;
     }
+
+    // Scroll into view on mobile when keyboard opens
+    window.addEventListener('resize', () => {
+      setTimeout(() => {
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 200);
+    });
   </script>
 
 </body>
