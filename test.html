@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Query Parameters Display</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    p {
+      background: #f0f0f0;
+      padding: 10px;
+      border-left: 4px solid #007acc;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Query Parameters</h1>
+  <div id="output"></div>
+
+  <script>
+    // Parse query parameters from the URL
+    const params = new URLSearchParams(window.location.search);
+    const outputDiv = document.getElementById('output');
+
+    if ([...params].length === 0) {
+      outputDiv.innerHTML = "<p>No query parameters found in the URL.</p>";
+    } else {
+      params.forEach((value, key) => {
+        const p = document.createElement('p');
+        p.textContent = `${key}: ${value}`;
+        outputDiv.appendChild(p);
+      });
+    }
+  </script>
+
+</body>
+</html>
