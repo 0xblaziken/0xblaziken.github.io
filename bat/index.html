@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+   
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        
+
+        .centered-message {
+            text-align: center;
+            font-size: 2em;
+            color: #333;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="centered-message">
+
+    </div>
+
+   function updateMessage(newContent) {
+       
+            const messageElement = document.getElementById('messageContainer');
+            
+            messageElement.innerHTML = newContent;
+        }
+
+
+    <script>
+
+       window.onload = function() {
+            console.log("Page loaded successfully");
+            setTimeout(() => {
+              window.Aha_App.showToolbar();
+              window.Aha_App.setToolbarTitle("PoC");
+              
+                updateMessage(window.Aha_App.getBaseInfo());
+              
+            }, 1000); 
+        };
+    </script>
+</body>
+</html>
