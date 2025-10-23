@@ -17,7 +17,7 @@
         }
         
 
-        .centered-message {
+        #centered-message {
             text-align: center;
             font-size: 2em;
             color: #333;
@@ -29,9 +29,7 @@
     </style>
 </head>
 <body>
-    <div class="centered-message">
-
-    </div>
+    <p id="centered-message"></p>
 
 
 
@@ -39,7 +37,7 @@
     <script>
            function updateMessage(newContent) {
        
-            const messageElement = document.getElementById('messageContainer');
+            const messageElement = document.getElementById('centered-message');
             
             messageElement.innerHTML = newContent;
         }
