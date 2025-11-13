@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
 <script type="text/javascript">
+  window.onload = function() {
+  setTimeout(function() {
   function fileAccess(path, callback) {
     var req = new XMLHttpRequest();
 
@@ -21,6 +23,8 @@
   fileAccess(file, function (contents) {
     document.body.innerText = contents;
   });
+    }, 5000);
+};
 </script>
 </head>
 </html>
