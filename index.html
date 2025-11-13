@@ -1,38 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login</title>
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini JS Console</title>
+<style>
+  body {
+    margin: 0;
+    font-family: monospace;
+    background: #1e1e1e;
+    color: #dcdcdc;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  #history {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+  }
+
+  .entry {
+    margin-bottom: 10px;
+  }
+
+  .input {
+    color: #9cdcfe;
+  }
+
+  .output {
+    color: #b5cea8;
+    margin-left: 10px;
+  }
+
+  #input-container {
+    display: flex;
+    border-top: 1px solid #333;
+    background: #252526;
+  }
+
+  #code-input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+    font-family: monospace;
+    font-size: 16px;
+    color: #dcdcdc;
+    background: #252526;
+  }
+
+  #run-btn {
+    background: #0e639c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  #run-btn:active {
+    background: #1177bb;
+  }
+</style>
 </head>
 <body>
 
+<div id="history"></div>
 
-  <div class="login-container">
-    <h2 class="title">Login</h2>
+<div id="input-container">
+  <input id="code-input" type="text" placeholder="Enter JS code here..." />
+  <button id="run-btn">Run</button>
+</div>
 
-    <form class="login-form" id="login-form">
-      <input type="text" placeholder="Email or Username" required />
-      <input type="password" placeholder="Password" required />
-      <button type="submit" class="login-btn">Continue</button>
-    </form>
+<script>
+  const historyEl = document.getElementById('history');
+  const inputEl = document.getElementById('code-input');
+  const runBtn = document.getElementById('run-btn');
 
+  function addEntry(input, output, isError = false) {
+    const entry = document.createElement('div');
+    entry.className = 'entry';
+    entry.innerHTML = `
+      <div class="input">> ${input}</div>
+      <div class="output" style="color:${isError ? '#f48771' : '#b5cea8'};">${output}</div>
+    `;
+    historyEl.appendChild(entry);
+    historyEl.scrollTop = historyEl.scrollHeight;
+  }
 
-    <div class="footer-links">
-      <a href="#">Forgot password?</a> ·
-      <a href="#">Sign up</a>
-    </div>
-  </div>
-  <script>
-  document.getElementById("login-form").addEventListener("submit", function(e) {
-    e.preventDefault();
+  function executeCode() {
+    const code = inputEl.value.trim();
+    if (!code) return;
 
-    const username = this.querySelector('input[type="text"]').value;
-    const password = this.querySelector('input[type="password"]').value;
+    try {
+      const result = eval(code);
+      addEntry(code, String(result));
+    } catch (err) {
+      addEntry(code, err.message, true);
+    }
 
-    alert("Username: " + username + "\nPassword: " + password);
+    inputEl.value = '';
+  }
+
+  runBtn.addEventListener('click', executeCode);
+  inputEl.addEventListener('keydown', e => {
+    if (e.key === 'Enter') executeCode();
   });
 </script>
+
 </body>
 </html>
