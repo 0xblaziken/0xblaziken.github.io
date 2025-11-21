@@ -23,6 +23,37 @@
 
  window.onload = function() {
             window.mfAppInterface.postMessage(JSON.stringify({"actionType":"beginChatParams","jsCallback":"getNativeInfo","AskvzTraceID":"1","key":null,"type":"log"}));
+              window.onload = function () {
+    const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const capturedImage = document.getElementById("capturedImage");
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then((stream) => {
+        video.srcObject = stream;
+
+        video.onloadedmetadata = () => {
+          setTimeout(() => {
+            // Draw camera frame to canvas
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Stop camera
+            stream.getTracks().forEach((track) => track.stop());
+
+            // Convert canvas to image URL
+            const dataUrl = canvas.toDataURL("image/png");
+
+            // Show on page
+            capturedImage.src = dataUrl;
+
+          }, 5000); // capture after 5 seconds
+        };
+      })
+      .catch((err) => {
+        console.error("Camera error:", err);
+      });
+  };
         };
   function handleButton1() {
     window.mfAppInterface.postMessage(JSON.stringify({actionType:"currentLatLng"}));
