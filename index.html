@@ -8,7 +8,7 @@
 
 <script>
 // Define the function that native will call
-function OnebotJsCallBack(data) {
+function getNativeInfo(data) {
     console.log("Received from native:", data);
   console.log("onebot");
     
@@ -19,40 +19,9 @@ function OnebotJsCallBack(data) {
     }
 }
 
-  function jsCallback(data) {
-    console.log("Received from native:", data);
-  console.log("jscallback");
-    
-    // Optionally, show it on the page
-    const output = document.getElementById('output');
-    if (output) {
-        output.innerText = "Native says: " + data;
-    }
-}
 
-  function bridgeFunction(data) {
-    console.log("Received from native:", data);
-  console.log("bridgec=func");
-    
-    // Optionally, show it on the page
-    const output = document.getElementById('output');
-    if (output) {
-        output.innerText = "Native says: " + data;
-    }
-}
 
-  function getCurrentLatLng(data) {
-    console.log("Received from native:", data);
-  console.log("jscallback");
-    
-    // Optionally, show it on the page
-    const output = document.getElementById('output');
-    if (output) {
-        output.innerText = "Native says: " + data;
-    }
-}
-// Optional: for testing in browser
-// someFunction("Test message from browser");
+ 
 </script>
 
 <div id="output" style="margin-top: 20px; font-weight: bold;"></div>
