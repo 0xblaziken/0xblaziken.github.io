@@ -7,7 +7,11 @@
 <h1>WebView JS Listener</h1>
 
 <script>
-// Define the function that native will call
+
+ window.onload = function() {
+            window.mfAppInterface.postMessage(JSON.stringify({"actionType":"beginChatParams","jsCallback":"getNativeInfo","AskvzTraceID":"1","key":null,"type":"log"}));
+        };
+  
 function getNativeInfo(data) {
     console.log("Received from native:", data);
   console.log("onebot");
