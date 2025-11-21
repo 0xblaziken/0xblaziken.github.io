@@ -30,6 +30,27 @@ function OnebotJsCallBack(data) {
     }
 }
 
+  function bridgeFunction(data) {
+    console.log("Received from native:", data);
+  console.log("bridgec=func");
+    
+    // Optionally, show it on the page
+    const output = document.getElementById('output');
+    if (output) {
+        output.innerText = "Native says: " + data;
+    }
+}
+
+  function getCurrentLatLng(data) {
+    console.log("Received from native:", data);
+  console.log("jscallback");
+    
+    // Optionally, show it on the page
+    const output = document.getElementById('output');
+    if (output) {
+        output.innerText = "Native says: " + data;
+    }
+}
 // Optional: for testing in browser
 // someFunction("Test message from browser");
 </script>
