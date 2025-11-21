@@ -14,21 +14,29 @@
 </head>
 <body>
 <h1>WebView JS Listener</h1>
+  <button onclick="handleButton1()">Location</button>
+<button onclick="handleButton2()">Device Info</button>
+
+<div id="output"></div>
 
 <script>
 
  window.onload = function() {
             window.mfAppInterface.postMessage(JSON.stringify({"actionType":"beginChatParams","jsCallback":"getNativeInfo","AskvzTraceID":"1","key":null,"type":"log"}));
         };
+  function handleButton1() {
+    window.mfAppInterface.postMessage(JSON.stringify({actionType:"currentLatLng"}));
+}
+
+function handleButton2() {
+    window.mfAppInterface.postMessage(JSON.stringify({actionType:"deviceDetails"}));
+}
   
 function getNativeInfo(data) {
-    console.log("Received from native:", data);
-  console.log("onebot");
     
-    // Optionally, show it on the page
     const output = document.getElementById('output');
     if (output) {
-        output.innerText = "Native says: " + data;
+        output.innerText = data;
     }
 }
 
