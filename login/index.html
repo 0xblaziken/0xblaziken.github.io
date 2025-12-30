@@ -31,15 +31,12 @@
       Password
       <input type="password" id="password" required>
     </label>
-    <button type="submit">Send</button>
+    <button type="submit">Submit</button>
   </form>
 
-  <h3>Server response</h3>
-  <pre id="output">No response yet.</pre>
 
   <script>
-    const NGROK_URL = 'https://1b28dd7edad0.ngrok-free.app';
-    const ENDPOINT = NGROK_URL + '/login';
+    
 
     document.getElementById('credForm').addEventListener('submit', async (ev) => {
       ev.preventDefault();
@@ -49,26 +46,7 @@
       const out = document.getElementById('output');
       out.textContent = 'Sending...';
 
-      try {
-        const resp = await fetch(ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'yes' },
-          body: JSON.stringify({ email, password })
-        });
-
-        const data = await resp.json();
-
-        if (!resp.ok) {
-          out.textContent = `Error ${resp.status}: ${JSON.stringify(data, null, 2)}`;
-          return;
-        }
-
       
-        out.textContent = JSON.stringify(data, null, 2);
-      } catch (err) {
-        out.textContent = 'Network error: ' + err.message;
-        console.error(err);
-      }
     });
   </script>
 </body>
