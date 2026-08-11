@@ -20,11 +20,82 @@ It processes three types of intents for opening URLs:
 ## Scheme validation
 >Before the URL gets loaded, it goes through several checks in [shouldIgnoreIntentUrl](https://source.chromium.org/chromium/chromium/src/+/main:chrome/android/java/src/org/chromium/chrome/browser/IntentHandler.java;drc=c8738dd61c7284dfa1e34c973c7b82b2c0d99c30;l=1071).
 
->[isUnsafeExternalScheme](https://source.chromium.org/chromium/chromium/src/+/main:chrome/android/java/src/org/chromium/chrome/browser/ExternalIntentUrlChecker.java;drc=c8738dd61c7284dfa1e34c973c7b82b2c0d99c30;l=76) checks if the lowercase representation of the URL has **javascript:** or **jar:** or **googlechrome:** as a scheme.
+>`isInvalidScheme` checks if the lowercase representation of the URL has **javascript:** or **jar:** or **googlechrome:** as a scheme.
+```java
+ private static boolean isInvalidScheme(@Nullable String scheme) {
+        return scheme != null
+                && (scheme.toLowerCase(Locale.US).equals(UrlConstants.JAVASCRIPT_SCHEME)
+                        || scheme.toLowerCase(Locale.US).equals(UrlConstants.JAR_SCHEME));
+    }
+```
 
 In [shouldIgnoreIntent](https://source.chromium.org/chromium/chromium/src/+/main:chrome/android/java/src/org/chromium/chrome/browser/IntentHandler.java;drc=c8738dd61c7284dfa1e34c973c7b82b2c0d99c30;l=1013), intents are checked in an order:
 
 If the "multi-tab" intent is present, then it checks it and returns early; else, if "drag and drop" intent is present, it checks it and returns; else, it checks the single URL intent.
+```java
+ public static boolean shouldIgnoreIntent(
+            Intent intent, @Nullable Context context, boolean isCustomTab) {
+        // Although not documented to, many/most methods that retrieve values from an Intent may
+        // throw. Because we can't control what packages might send to us, we should catch any
+        // Throwable and then fail closed (safe). This is ugly, but resolves top crashers in the
+        // wild.
+        try {
+            // If the intent contains a list of tabs to reparent, it's a valid intent from Chrome.
+            @Nullable MultiTabMetadata multiTabMetadata = getMultiTabMetadata(intent);
+            if (multiTabMetadata != null) {
+                // Exit early if the incognito intent is not allowed.
+                if (IntentUtils.safeGetBooleanExtra(intent, EXTRA_OPEN_NEW_INCOGNITO_TAB, false)
+                        && !isAllowedIncognitoIntent(
+                                wasIntentSenderChrome(intent), isCustomTab, intent)) {
+                    return true;
+                }
+                ArrayList<Integer> tabIds = multiTabMetadata.tabIds;
+                ArrayList<String> urls = multiTabMetadata.urls;
+
+                if (urls == null || tabIds == null || urls.size() != tabIds.size()) {
+                    assert false : "Urls and tabIds size are mismatched or empty.";
+                    return true;
+                }
+
+                for (int i = urls.size() - 1; i >= 0; i--) {
+                    if (shouldIgnoreIntentUrl(intent, context, urls.get(i), isCustomTab)) {
+                        urls.remove(i);
+                        tabIds.remove(i);
+                    }
+                }
+                return urls.isEmpty();
+            }
+            // Ignore all invalid URLs, regardless of what the intent was.
+            @Nullable TabGroupMetadata tabGroupMetadata = IntentHandler.getTabGroupMetadata(intent);
+            if (tabGroupMetadata != null) {
+                // Exit early if the incognito intent is not allowed.
+                if (tabGroupMetadata.isIncognito
+                        && !isAllowedIncognitoIntent(
+                                wasIntentSenderChrome(intent), isCustomTab, intent)) {
+                    return true;
+                }
+
+                // Check url validity and remove invalid urls if needed.
+                List<Entry<Integer, String>> tabIdsToUrls = tabGroupMetadata.tabIdsToUrls;
+                Iterator<Entry<Integer, String>> iterator = tabIdsToUrls.iterator();
+                while (iterator.hasNext()) {
+                    Map.Entry<Integer, String> entry = iterator.next();
+                    String url = entry.getValue();
+                    if (shouldIgnoreIntentUrl(intent, context, url, isCustomTab)) {
+                        iterator.remove();
+                    }
+                }
+                // TODO(crbug.com/384979079) Add metrics for invalid url and ignored intent during
+                // group drag drop.
+                return tabIdsToUrls.size() == 0;
+            } else {
+                return shouldIgnoreIntentUrl(
+                        intent, context, getUrlFromIntent(intent), isCustomTab);
+            }
+        } catch (Throwable t) {
+            return true;
+        }
+```
 
 ## Processing
 Ultimately, if `shouldIgnoreIntent` returns false, then processing of the intent happens at [maybeHandleUrlIntent](https://source.chromium.org/chromium/chromium/src/+/main:chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java;drc=c8738dd61c7284dfa1e34c973c7b82b2c0d99c30;l=2036) depending on which type of intent they are.
